@@ -2,69 +2,72 @@ import math
 
 class Quaternion:
 
-
-    def __init__(self, w = 0, x = 0, y = 0, z = 0):
-
-        self.w = w
+    def __init__(self, w, x, y, z):
+        
         self.x = x
         self.y = y
         self.z = z
+        self.w = w
 
-        self.calculate_magnitude()
 
+    def __repr__(self):
 
-    def __str__(self):
-        return f"({self.w}, {self.x}, {self.y}, {self.z})"
-    
-    
-    def print_quat(self):
-        print(Quaternion(self.w, self.x, self.y ,self.z))
+        w_rounded = f"{round(self.w, 5):.5f}"
+        x_rounded = f"{round(self.x, 5):.5f}"
+        y_rounded = f"{round(self.y, 5):.5f}"
+        z_rounded = f"{round(self.z, 5):.5f}"
+        return f"{w_rounded}, {x_rounded}i, {y_rounded}j, {z_rounded}k"
     
 
-    def calculate_magnitude(self):
-
-        magnitude = math.sqrt(self.w ** 2 + self.x ** 2 + self.y ** 2 + self.z ** 2)
-        self.w = self.w / magnitude
-        self.x = self.x / magnitude
-        self.y = self.y / magnitude
-        self.z = self.z / magnitude
-    
-    
     def __mul__(self, other):
 
         w = self.w * other.w - self.x * other.x - self.y * other.y - self.z * other.z
         x = self.w * other.x + self.x * other.w + self.y * other.z - self.z * other.y
         y = self.w * other.y - self.x * other.z + self.y * other.w + self.z * other.x
         z = self.w * other.z + self.x * other.y - self.y * other.x + self.z * other.w
+        
+        return Quaternion(w, x, y, z)
+
+
+    @staticmethod
+    def compute_rotation(theta, x, y, z):
+
+        vector_magnitude = math.sqrt(x ** 2 + y ** 2 + z ** 2)
+        normalized_x = x / vector_magnitude
+        normalized_y = y / vector_magnitude
+        normalized_z = z / vector_magnitude
+
+        angle_rad = math.radians(theta)
+
+        w = math.cos(angle_rad / 2)
+        x = normalized_x * math.sin(angle_rad / 2)
+        y = normalized_y * math.sin(angle_rad / 2)
+        z = normalized_z * math.sin(angle_rad / 2)
 
         return Quaternion(w, x, y, z)
+
+
+    def conjugate(self):
+        return Quaternion(self.w, -self.x, -self.y, -self.z)
     
-    
-    def local_rotation(self, angle, axis_x, axis_y, axis_z):
+    @staticmethod
+    def pure_quaternion(x, y, z):
+        return Quaternion(0, x, y, z)
+        
 
-        magnitude = math.sqrt(axis_x ** 2 + axis_y ** 2 + axis_z ** 2)
-        axis_x = axis_x / magnitude
-        axis_y = axis_x / magnitude
-        axis_z = axis_x / magnitude
+q = Quaternion.compute_rotation(45, 0, 0, 1)
+q_con = q.conjugate()
 
-        local_rotation_w = math.cos(angle / 2)
-        local_rotation_x = axis_x * math.sin(angle / 2)
-        local_rotation_y = axis_y * math.sin(angle / 2)
-        local_rotation_z = axis_z * math.sin(angle / 2)
-
-        return Quaternion(local_rotation_w, local_rotation_x, local_rotation_y, local_rotation_z)
-    
+vertices = [[-0.5, -0.5, -0.5], [-0.5, -0.5, 0.5], 
+               [-0.5, 0.5, -0.5], [-0.5, 0.5, 0.5],
+               [0.5, -0.5, -0.5], [0.5, -0.5, 0.5], 
+               [0.5, 0.5, -0.5], [0.5, 0.5, 0.5]]
 
 
+for vertex in vertices:
+    pure_quaternion = Quaternion.pure_quaternion(vertex[0], vertex[1], vertex[2])
+    rotation_vector = q * pure_quaternion * q_con
+    print(rotation_vector)
 
 
-q1 = Quaternion(1, 2, 2, 1)
-# q2 = Quaternion(3, 2, 3, 3)
-
-# q1.print_quat()
-# q2.print_quat()
-
-# print(q1.local_rotation(45, 2, 2, 3))
-print(q1 * q1.local_rotation(180, 2, 2, 3))
-# print(q1 * q2)
 
