@@ -1,4 +1,5 @@
 import math
+import numpy as np
 
 class Quaternion:
 
@@ -55,19 +56,10 @@ class Quaternion:
         return Quaternion(0, x, y, z)
         
 
-q = Quaternion.compute_rotation(45, 0, 0, 1)
+q = Quaternion.compute_rotation(45, 1, 0, 0)
 q_con = q.conjugate()
 
-vertices = [[-0.5, -0.5, -0.5], [-0.5, -0.5, 0.5], 
-               [-0.5, 0.5, -0.5], [-0.5, 0.5, 0.5],
-               [0.5, -0.5, -0.5], [0.5, -0.5, 0.5], 
-               [0.5, 0.5, -0.5], [0.5, 0.5, 0.5]]
 
-
-for vertex in vertices:
-    pure_quaternion = Quaternion.pure_quaternion(vertex[0], vertex[1], vertex[2])
-    rotation_vector = q * pure_quaternion * q_con
-    print(rotation_vector)
 
 
 
