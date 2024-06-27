@@ -54,10 +54,6 @@ class Quaternion:
     @staticmethod
     def pure_quaternion(x, y, z):
         return Quaternion(0, x, y, z)
-        
-
-q = Quaternion.compute_rotation(45, 1, 0, 0)
-q_con = q.conjugate()
 
 
 
