@@ -61,10 +61,10 @@ def draw_text(text, font, text_col, x, y):
     screen.blit(img, (x, y))
 
 
-def spherical_linear_interpolation(q1, q2, t):
+# def spherical_linear_interpolation(q1, q2, t):
 
-    cos_theta = q1.w * q2.w + q1.x * q2.x + q1.y * q2.y + q1.z * q2.z
-    sin_theta = math.sqrt(1 - cos_theta ** 2)
+#     cos_theta = q1.w * q2.w + q1.x * q2.x + q1.y * q2.y + q1.z * q2.z
+#     sin_theta = math.sqrt(1 - cos_theta ** 2)
 
 
 
@@ -81,7 +81,7 @@ while True:
     q = Quaternion.compute_rotation(math.radians(angle), 1, 0, 0)
     q2 = Quaternion.compute_rotation(math.radians(angle), 1, 1, 0)
     q_con = q.conjugate()
-    t = spherical_linear_interpolation(q, q2)
+    # t = spherical_linear_interpolation(q, q2)
 
 
     rotated_vectors = rotate_vectors(vertices, q, q_con)
