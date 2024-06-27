@@ -14,7 +14,7 @@ pygame.display.set_caption("Quaternion 3D rotation in 2D projection")
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 circle_pos = [WIDTH / 2, HEIGHT / 2]
 points = []
-point_texts = ["Hope", "I", "can", "see", "you", "some", "day", "<3"]
+point_texts = ["A", "B", "C", "D", "E", "F", "G", "H"]
 text_font = pygame.font.SysFont("Arial", 15)
 angle = 0
 
@@ -56,13 +56,19 @@ def project_points(sample_rotated_vectors):
 
 
 def draw_text(text, font, text_col, x, y):
+
     img = font.render(text, True, text_col)
     screen.blit(img, (x, y))
 
 
+def spherical_linear_interpolation(q1, q2, t):
+
+    cos_theta = q1.w * q2.w + q1.x * q2.x + q1.y * q2.y + q1.z * q2.z
+    sin_theta = math.sqrt(1 - cos_theta ** 2)
+
+
 
 while True:
-
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -73,7 +79,10 @@ while True:
     angle += 2
 
     q = Quaternion.compute_rotation(math.radians(angle), 1, 0, 0)
+    q2 = Quaternion.compute_rotation(math.radians(angle), 1, 1, 0)
     q_con = q.conjugate()
+    t = spherical_linear_interpolation(q, q2)
+
 
     rotated_vectors = rotate_vectors(vertices, q, q_con)
     projected_points = project_points(rotated_vectors)
