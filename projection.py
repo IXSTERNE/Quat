@@ -16,6 +16,7 @@ circle_pos = [WIDTH / 2, HEIGHT / 2]
 points = []
 point_texts = ["A", "B", "C", "D", "E", "F", "G", "H"]
 text_font = pygame.font.SysFont("Arial", 15)
+angle = 0
 
 
 
@@ -38,7 +39,6 @@ def rotate_vectors(sample_vertices, q, q_con):
     for vertex in sample_vertices:
         pure_quaternion = Quaternion.pure_quaternion(vertex[0], vertex[1], vertex[2])
         rotated_vertices = q * pure_quaternion * q_con
-        save1 = rotated_vertices
         rotated_vector = [rotated_vertices.x, rotated_vertices.y, rotated_vertices.z]
         rotated_vectors.append(rotated_vector)
     return rotated_vectors
@@ -61,7 +61,6 @@ def draw_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
     screen.blit(img, (x, y))
 
-angle = 0
 
 while True:
 
@@ -69,7 +68,6 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
-
 
     angle += 2
 
