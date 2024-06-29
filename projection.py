@@ -1,7 +1,7 @@
 import pygame
 import math
-import numpy as np
 from quaternion import Quaternion
+from slerp import slerp
 
 pygame.init()
 
@@ -16,7 +16,7 @@ circle_pos = [WIDTH / 2, HEIGHT / 2]
 points = []
 point_texts = ["A", "B", "C", "D", "E", "F", "G", "H"]
 text_font = pygame.font.SysFont("Arial", 15)
-angle = 0
+
 
 
 
@@ -38,6 +38,7 @@ def rotate_vectors(sample_vertices, q, q_con):
     for vertex in sample_vertices:
         pure_quaternion = Quaternion.pure_quaternion(vertex[0], vertex[1], vertex[2])
         rotated_vertices = q * pure_quaternion * q_con
+        save1 = rotated_vertices
         rotated_vector = [rotated_vertices.x, rotated_vertices.y, rotated_vertices.z]
         rotated_vectors.append(rotated_vector)
     return rotated_vectors
@@ -60,13 +61,7 @@ def draw_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
     screen.blit(img, (x, y))
 
-
-# def spherical_linear_interpolation(q1, q2, t):
-
-#     cos_theta = q1.w * q2.w + q1.x * q2.x + q1.y * q2.y + q1.z * q2.z
-#     sin_theta = math.sqrt(1 - cos_theta ** 2)
-
-
+angle = 0
 
 while True:
 
@@ -79,12 +74,10 @@ while True:
     angle += 2
 
     q = Quaternion.compute_rotation(math.radians(angle), 1, 0, 0)
-    q2 = Quaternion.compute_rotation(math.radians(angle), 1, 1, 0)
     q_con = q.conjugate()
-    # t = spherical_linear_interpolation(q, q2)
-
-
     rotated_vectors = rotate_vectors(vertices, q, q_con)
+
+
     projected_points = project_points(rotated_vectors)
     
     screen.fill(BLACK)
