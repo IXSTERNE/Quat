@@ -8,15 +8,6 @@ class Ternion:
         self.y = y
         self.z = z
         self.w = w
-
-
-    # def __repr__(self):
-
-    #     w_rounded = f"{round(self.w, 5):.5f}"
-    #     x_rounded = f"{round(self.x, 5):.5f}"
-    #     y_rounded = f"{round(self.y, 5):.5f}"
-    #     z_rounded = f"{round(self.z, 5):.5f}"
-    #     return f"{w_rounded}, {x_rounded}i, {y_rounded}j, {z_rounded}k"
     
 
     def __mul__(self, other):

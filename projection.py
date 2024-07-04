@@ -1,6 +1,7 @@
 import pygame
 from ternion import Ternion
 from slerp import slerp
+import numpy as np
 
 pygame.init()
 
@@ -17,15 +18,20 @@ point_texts = ["A", "B", "C", "D", "E", "F", "G", "H"]
 text_font = pygame.font.SysFont("Arial", 15)
 angle = 0
 
-vec_x = 0
+vec_x = 1
 vec_y = 1
 vec_z = 0
 
 
-vertices = [[-1, -1, 1], [1, -1, 1], 
-            [1, 1, 1], [-1, 1, 1],
-            [-1, -1, -1], [1, -1, -1], 
-            [1, 1, -1], [-1, 1, -1]]
+vertices = np.array([
+            [-1, -1, 1], 
+            [1, -1, 1], 
+            [1, 1, 1], 
+            [-1, 1, 1],
+            [-1, -1, -1], 
+            [1, -1, -1], 
+            [1, 1, -1], 
+            [-1, 1, -1]])
 
 edges = [[0, 1], [1, 2], [2, 3], [3, 0],
          [4, 5], [5, 6], [6, 7], [7, 4],
@@ -50,7 +56,7 @@ def project_points(sample_rotated_vectors):
     
     for point in sample_rotated_vectors:
         x, y, z = point
-        f = 500 / (z + 4)
+        f = 600 / (z + 4)
         x, y = x * f, y * f
         projected_points.append([WIDTH / 2 + x, HEIGHT / 2 - y])
     return projected_points
@@ -70,7 +76,7 @@ while True:
             pygame.quit()
             exit()
 
-    if angle <= 360:
+    if angle <= 90:
         angle += 0.07
 
 
@@ -92,11 +98,19 @@ while True:
         pygame.draw.line(screen, RED, projected_points[p1], projected_points[p2], 1)
 
 
-
-
     angle_text = "Angle: {}".format(int(angle))
     draw_text(angle_text, text_font, WHITE, 10, 10)
 
+    pygame.draw.circle(screen, WHITE, origin, 3)
     pygame.draw.line(screen, WHITE, origin, (WIDTH / 2 + vec_x * 200, HEIGHT / 2 + vec_y * -200), 1)
+
+    q_text_w = "w: {:.5f}".format(q.w)
+    q_text_i = "i: {:.5f}".format(q.x)
+    q_text_j = "j: {:.5f}".format(q.y)
+    q_text_k = "k: {:.5f}".format(q.z)
+    draw_text(q_text_w, text_font, WHITE, 10, 25)
+    draw_text(q_text_i, text_font, WHITE, 10, 40)
+    draw_text(q_text_j, text_font, WHITE, 10, 55)
+    draw_text(q_text_k, text_font, WHITE, 10, 70)
 
     pygame.display.update()
