@@ -29,11 +29,12 @@ class Ternion:
         normalized_z = z / vector_magnitude
 
         angle_rad = math.radians(theta)
+        half_angle_sin = math.sin(angle_rad / 2)
 
         w = math.cos(angle_rad / 2)
-        x = normalized_x * math.sin(angle_rad / 2)
-        y = normalized_y * math.sin(angle_rad / 2)
-        z = normalized_z * math.sin(angle_rad / 2)
+        x = normalized_x * half_angle_sin
+        y = normalized_y * half_angle_sin
+        z = normalized_z * half_angle_sin
 
         return Ternion(w, x, y, z)
 

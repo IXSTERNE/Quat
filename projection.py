@@ -18,9 +18,9 @@ point_texts = ["A", "B", "C", "D", "E", "F", "G", "H"]
 text_font = pygame.font.SysFont("Arial", 15)
 angle = 0
 
-vec_x = 1
+vec_x = 0
 vec_y = 1
-vec_z = 0
+vec_z = 1
 
 
 vertices = np.array([
@@ -56,7 +56,7 @@ def project_points(sample_rotated_vectors):
     
     for point in sample_rotated_vectors:
         x, y, z = point
-        f = 600 / (z + 4)
+        f = 600 / (z + 6)
         x, y = x * f, y * f
         projected_points.append([WIDTH / 2 + x, HEIGHT / 2 - y])
     return projected_points
@@ -76,7 +76,7 @@ while True:
             pygame.quit()
             exit()
 
-    if angle <= 90:
+    if angle <= 360:
         angle += 0.07
 
 
