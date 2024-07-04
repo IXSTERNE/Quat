@@ -1,6 +1,5 @@
 import pygame
-import math
-from quaternion import Quaternion
+from ternion import Ternion
 from slerp import slerp
 
 pygame.init()
@@ -31,14 +30,13 @@ edges = [[0, 1], [1, 2], [2, 3], [3, 0],
          [0, 4], [1, 5], [2, 6], [3, 7]]
 
 
-
-def rotate_vectors(sample_vertices, q, q_con):
+def rotate_vectors(sample_vertices, q):
 
     rotated_vectors = []
     
     for vertex in sample_vertices:
-        pure_quaternion = Quaternion.pure_quaternion(vertex[0], vertex[1], vertex[2])
-        rotated_vertices = q * pure_quaternion * q_con
+        pure_quaternion = Ternion.pure_quaternion(vertex[0], vertex[1], vertex[2])
+        rotated_vertices = q * pure_quaternion * q.conjugate()
         rotated_vector = [rotated_vertices.x, rotated_vertices.y, rotated_vertices.z]
         rotated_vectors.append(rotated_vector)
     return rotated_vectors
@@ -50,7 +48,7 @@ def project_points(sample_rotated_vectors):
     
     for point in sample_rotated_vectors:
         x, y, z = point
-        f = 200 / (z + 4)
+        f = 500 / (z + 4)
         x, y = x * f, y * f
         projected_points.append([WIDTH / 2 + x, HEIGHT / 2 - y])
     return projected_points
@@ -69,15 +67,15 @@ while True:
             pygame.quit()
             exit()
 
-    angle += 2
-
-    q = Quaternion.compute_rotation(math.radians(angle), 1, 0, 0)
-    q_con = q.conjugate()
-    rotated_vectors = rotate_vectors(vertices, q, q_con)
+    if angle <= 90:
+        angle += 0.03
 
 
-    projected_points = project_points(rotated_vectors)
+    q = Ternion.compute_rotation(angle, 1, 2, 0)
     
+    rotated_vectors = rotate_vectors(vertices, q)
+    projected_points = project_points(rotated_vectors)
+        
     screen.fill(BLACK)
 
     for point, text in zip(projected_points, point_texts):
