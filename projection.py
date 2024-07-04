@@ -2,6 +2,7 @@ import pygame
 from ternion import Ternion
 from slerp import slerp
 import numpy as np
+import math
 
 pygame.init()
 
@@ -56,9 +57,12 @@ def project_points(sample_rotated_vectors):
     
     for point in sample_rotated_vectors:
         x, y, z = point
-        f = 600 / (z + 6)
+
+        f = 600 / (z + 5)
         x, y = x * f, y * f
+
         projected_points.append([WIDTH / 2 + x, HEIGHT / 2 - y])
+
     return projected_points
 
 
