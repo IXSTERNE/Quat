@@ -8,20 +8,21 @@ pygame.init()
 
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
+BLUE = (0, 0, 255)
 BLACK = (0, 0, 0)
 WIDTH, HEIGHT = 1200, 800
 
 pygame.display.set_caption("Quaternion 3D rotation in 2D projection")
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 origin = [WIDTH / 2, HEIGHT / 2]
-points = []
 point_texts = ["A", "B", "C", "D", "E", "F", "G", "H"]
 text_font = pygame.font.SysFont("Arial", 15)
 angle = 0
+degrees = 360
 
-vec_x = 0
+vec_x = 2
 vec_y = 1
-vec_z = 1
+vec_z = 6
 
 
 vertices = np.array([
@@ -66,11 +67,11 @@ def project_points(sample_rotated_vectors):
     return projected_points
 
 
+
 def draw_text(text, font, text_col, x, y):
 
     img = font.render(text, True, text_col)
     screen.blit(img, (x, y))
-
 
 
 while True:
@@ -80,7 +81,7 @@ while True:
             pygame.quit()
             exit()
 
-    if angle <= 360:
+    if angle <= degrees:
         angle += 0.07
 
 
@@ -105,7 +106,7 @@ while True:
     angle_text = "Angle: {}".format(int(angle))
     draw_text(angle_text, text_font, WHITE, 10, 10)
 
-    pygame.draw.circle(screen, WHITE, origin, 3)
+    pygame.draw.circle(screen, BLUE, origin, 3)
     pygame.draw.line(screen, WHITE, origin, (WIDTH / 2 + vec_x * 200, HEIGHT / 2 + vec_y * -200), 1)
 
     q_text_w = "w: {:.5f}".format(q.w)
