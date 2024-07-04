@@ -7,17 +7,19 @@ pygame.init()
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 BLACK = (0, 0, 0)
-WIDTH, HEIGHT = 800, 600
+WIDTH, HEIGHT = 1200, 800
 
 pygame.display.set_caption("Quaternion 3D rotation in 2D projection")
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-circle_pos = [WIDTH / 2, HEIGHT / 2]
+origin = [WIDTH / 2, HEIGHT / 2]
 points = []
 point_texts = ["A", "B", "C", "D", "E", "F", "G", "H"]
 text_font = pygame.font.SysFont("Arial", 15)
 angle = 0
 
-
+vec_x = 0
+vec_y = 1
+vec_z = 0
 
 
 vertices = [[-1, -1, 1], [1, -1, 1], 
@@ -60,6 +62,7 @@ def draw_text(text, font, text_col, x, y):
     screen.blit(img, (x, y))
 
 
+
 while True:
 
     for event in pygame.event.get():
@@ -67,11 +70,11 @@ while True:
             pygame.quit()
             exit()
 
-    if angle <= 90:
-        angle += 0.03
+    if angle <= 360:
+        angle += 0.07
 
 
-    q = Ternion.compute_rotation(angle, 1, 2, 0)
+    q = Ternion.compute_rotation(angle, vec_x, vec_y, vec_z)
     
     rotated_vectors = rotate_vectors(vertices, q)
     projected_points = project_points(rotated_vectors)
@@ -82,11 +85,18 @@ while True:
         x, y = point[0], point[1]
         pygame.draw.circle(screen, WHITE, (x, y), 5)
         draw_text(text, text_font, WHITE, x + 5, y + 5)
-        
+    
     
     for edge in edges:
         p1, p2 = edge
         pygame.draw.line(screen, RED, projected_points[p1], projected_points[p2], 1)
-    
-    
-    pygame.display.flip()
+
+
+
+
+    angle_text = "Angle: {}".format(int(angle))
+    draw_text(angle_text, text_font, WHITE, 10, 10)
+
+    pygame.draw.line(screen, WHITE, origin, (WIDTH / 2 + vec_x * 200, HEIGHT / 2 + vec_y * -200), 1)
+
+    pygame.display.update()
