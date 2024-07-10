@@ -89,17 +89,18 @@ while True:
     q = Ternion.compute_rotation(angle, vec_x, vec_y, vec_z)
     
     rotated_vectors = rotate_vectors(vertices, q)
+    
 
     if checkpoint is not None:
 
         interpolated_vectors = slerp(checkpoint, rotated_vectors, 0.5)
 
-        print(interpolated_vectors)
+        for point, text in zip(interpolated_vectors, point_texts):
+            x, y = point[0], point[1]
+            pygame.draw.circle(screen, WHITE, (x, y), 5)
+            draw_text(text, text_font, WHITE, x + 5, y + 5)
 
-        # for point, text in zip(interpolated_vectors, point_texts):
-        #     x, y = point[0], point[1]
-        #     pygame.draw.circle(screen, WHITE, (x, y), 5)
-        #     draw_text(text, text_font, WHITE, x + 5, y + 5)
+    checkpoint = rotated_vectors
 
     projected_points = project_points(rotated_vectors)
         
