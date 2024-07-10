@@ -75,6 +75,7 @@ def draw_text(text, font, text_col, x, y):
     screen.blit(img, (x, y))
 
 
+
 while True:
 
     for event in pygame.event.get():
