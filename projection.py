@@ -11,7 +11,7 @@ BLUE = (0, 0, 255)
 BLACK = (0, 0, 0)
 WIDTH, HEIGHT = 1200, 800
 
-pygame.display.set_caption("Quaternion 3D rotation in 2D projection")
+pygame.display.set_caption("Quaternion 3D rotation")
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 origin = [WIDTH / 2, HEIGHT / 2]
 point_texts = ["A", "B", "C", "D", "E", "F", "G", "H"]
@@ -91,16 +91,16 @@ while True:
     rotated_vectors = rotate_vectors(vertices, q)
     
 
-    if checkpoint is not None:
+    # if checkpoint is not None:
 
-        interpolated_vectors = slerp(checkpoint, rotated_vectors, 0.5)
+    #     interpolated_vectors = slerp(checkpoint, rotated_vectors, 0.5)
 
-        for point, text in zip(interpolated_vectors, point_texts):
-            x, y = point[0], point[1]
-            pygame.draw.circle(screen, WHITE, (x, y), 5)
-            draw_text(text, text_font, WHITE, x + 5, y + 5)
+    #     for point, text in zip(interpolated_vectors, point_texts):
+    #         x, y = point[0], point[1]
+    #         pygame.draw.circle(screen, WHITE, (x, y), 5)
+    #         draw_text(text, text_font, WHITE, x + 5, y + 5)
 
-    checkpoint = rotated_vectors
+    # checkpoint = rotated_vectors
 
     projected_points = project_points(rotated_vectors)
         
